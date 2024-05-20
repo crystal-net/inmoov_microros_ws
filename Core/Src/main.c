@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -335,6 +335,29 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
+// PrintF function override Version 1
+//int _write(int file, char *ptr, int len)
+//{
+//	int DataIdx;
+//
+//	for (DataIdx = 0; DataIdx < len; DataIdx++)
+//	{
+//		__io_putchar(*ptr++);
+//	}
+//	return len;
+//}
+
+// PrintF function using the SWO.
+// The key here is ITM_SendChar which sends it to SWO
+  int _write(int file, char *ptr, int len)
+  {
+  	int i=0;
+  	for( i=0; i<len; i++ )
+  		ITM_SendChar((*ptr++));
+		return len;
+  }
+uint8_t count = 0;
+
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -351,7 +374,7 @@ void StartDefaultTask(void *argument)
   for(;;)
   {
   	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-
+  	printf("hello world \n");
   	osDelay(25);
   }
   /* USER CODE END 5 */
